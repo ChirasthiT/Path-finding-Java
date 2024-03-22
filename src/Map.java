@@ -5,8 +5,8 @@ public class Map {
         map = new EntryArraylist();
     }
     
-    public void put(Entry entry) {
-        map.add(entry);
+    public void put(Cell key, Cell value) {
+        map.add(new Entry(key, value));
     }
     
     public boolean containsKey(Cell key) {

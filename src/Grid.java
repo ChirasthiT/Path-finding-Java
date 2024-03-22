@@ -126,7 +126,7 @@ public class Grid {
 
     public void shortestPath() {
         CustomQueue queue = new CustomQueue();
-        HashMap<Cell, Cell> parents = new HashMap<>();
+        Map parents = new Map();
         CustomArrayList visited = new CustomArrayList();
 
         // Checking if the goal and robot is placed
@@ -168,7 +168,7 @@ public class Grid {
         }
     }
 
-    private void constructPath(HashMap<Cell, Cell> parentMap, Cell goal) {
+    private void constructPath(Map parentMap, Cell goal) {
         path = new CustomArrayList();
         Cell current = goal;
 
