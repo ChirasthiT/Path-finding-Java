@@ -28,8 +28,8 @@ public class EntryArraylist {
     }
 
     public boolean contains(Cell data) {
-        for (Entry cell:arr) {
-            if (cell.key == data) {
+        for (int i = 0; i < index; i++) {
+            if (arr[i].key == data) {
                 return true;
             }
         }
