@@ -172,6 +172,7 @@ public class Grid {
     private void constructPath(Map parentMap, Cell goal) {
         path = new CustomArrayList();
         Cell current = goal;
+        StringBuilder orientation = new StringBuilder();
 
         while (parentMap.containsKey(current)) {
             // Adding the cells of the path to path array
@@ -180,7 +181,9 @@ public class Grid {
             current = parentMap.get(current);
         }
 
-        System.out.println("\n" + path + "\n" + "Total No of steps : " +  path.size() +"\n");
+        path.add(robotLocation);
+        path = path.reverse();
+        System.out.println("\n" + path + "\n" + "Total No of steps : " +  (path.size() - 1)  +"\n");
 
         Grid grid = new Grid(rows, columns);
         grid.setGoal(goalLocation);
@@ -192,12 +195,34 @@ public class Grid {
         }
 
         // Setting the path
-        for (int i = path.size() - 1; i > 0; i--) {
+        for (int i = 1; i < path.size()-1; i++) {
             Cell cell = path.get(i);
             grid.setPath(cell.x, cell.y);
         }
 
         grid.display();
         System.out.println();
+
+        for (int i = 0; i < path.size()-1; i++) {
+            orientation.append(getDirections(path.get(i), path.get(i + 1)));
+        }
+        orientation.append("Goal Reached!");
+        System.out.println("Orientation" + "\n" + orientation + "\n");
+    }
+
+    private String getDirections(Cell from, Cell to) {
+        int dx = to.x - from.x;
+        int dy = to.y - from.y;
+
+        if (dx == 0 && dy == -1) return "left -> ";
+        if (dx == 0 && dy == 1) return "right -> ";
+        if (dx == 1 && dy == 0) return "down -> ";
+        if (dx == -1 && dy == 0) return "up -> ";
+        if (dx == 1 && dy == -1) return "lower left -> ";
+        if (dx == -1 && dy == -1) return "upper left -> ";
+        if (dx == 1 && dy == 1) return "lower right -> ";
+        if (dx == -1 && dy == 1) return "upper right -> ";
+
+        return "";
     }
 }
