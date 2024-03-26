@@ -2,7 +2,7 @@ import java.util.Arrays;
 import java.util.Objects;
 
 public class Grid {
-    // Creating variables to store date
+    // Creating instance variables to store date
     private final Cell[][] grid;
     private boolean robotPlaced = false;
     private boolean goalPlaced = false;
@@ -25,7 +25,6 @@ public class Grid {
             }
         }
     }
-
     // Display method for the grid
     public void display() {
         for (Cell[] arr:grid) {
@@ -130,6 +129,8 @@ public class Grid {
         Map parents = new Map();
         CustomArrayList visited = new CustomArrayList();
 
+        long startTime = System.currentTimeMillis();
+
         // Checking if the goal and robot is placed
         if (robotPlaced && goalPlaced) {
             queue.enqueue(robotLocation);
@@ -147,6 +148,8 @@ public class Grid {
             if (current == goalLocation) {
                 constructPath(parents, current);
                 found = true;
+                long endTime = System.currentTimeMillis();
+                System.out.println("\n" + "Execution Time : " + (endTime - startTime) + " ms");
                 return;
             }
 
@@ -166,12 +169,15 @@ public class Grid {
         }
         if (!found) {
             System.out.println("No path found!!" + "\n");
+            long notFoundEndTime = System.currentTimeMillis();
+            System.out.println("\n" + "Execution Time : " + (notFoundEndTime - startTime) + " ms");
         }
     }
 
     private void constructPath(Map parentMap, Cell goal) {
         path = new CustomArrayList();
         Cell current = goal;
+        StringBuilder orientation = new StringBuilder();
 
         while (parentMap.containsKey(current)) {
             // Adding the cells of the path to path array
@@ -180,7 +186,9 @@ public class Grid {
             current = parentMap.get(current);
         }
 
-        System.out.println("\n" + path + "\n" + "Total No of steps : " +  path.size() +"\n");
+        path.add(robotLocation);
+        path = path.reverse();
+        System.out.println("\n" + path + "\n" + "Total No of steps : " +  (path.size() - 1)  +"\n");
 
         Grid grid = new Grid(rows, columns);
         grid.setGoal(goalLocation);
@@ -192,12 +200,34 @@ public class Grid {
         }
 
         // Setting the path
-        for (int i = path.size() - 1; i > 0; i--) {
+        for (int i = 1; i < path.size()-1; i++) {
             Cell cell = path.get(i);
             grid.setPath(cell.x, cell.y);
         }
 
         grid.display();
         System.out.println();
+
+        for (int i = 0; i < path.size()-1; i++) {
+            orientation.append(getDirections(path.get(i), path.get(i + 1)));
+        }
+        orientation.append("Goal Reached!");
+        System.out.println("Orientation" + "\n" + orientation + "\n");
+    }
+
+    private String getDirections(Cell from, Cell to) {
+        int x = to.x - from.x;
+        int y = to.y - from.y;
+
+        if (x == 0 && y == -1) return "left -> ";
+        if (x == 0 && y == 1) return "right -> ";
+        if (x == 1 && y == 0) return "down -> ";
+        if (x == -1 && y == 0) return "up -> ";
+        if (x == 1 && y == -1) return "lower left -> ";
+        if (x == -1 && y == -1) return "upper left -> ";
+        if (x == 1 && y == 1) return "lower right -> ";
+        if (x == -1 && y == 1) return "upper right -> ";
+
+        return "";
     }
 }

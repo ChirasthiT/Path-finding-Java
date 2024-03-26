@@ -44,6 +44,14 @@ public class CustomArrayList {
         return arr[i];
     }
 
+    public CustomArrayList reverse() {
+        CustomArrayList temp = new CustomArrayList();
+        for (int i = index-1; i > -1 ; i--) {
+            temp.add(arr[i]);
+        }
+        return temp;
+    }
+
     @Override
     public String toString() {
         StringBuilder out = new StringBuilder();
