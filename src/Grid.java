@@ -2,7 +2,7 @@ import java.util.Arrays;
 import java.util.Objects;
 
 public class Grid {
-    // Creating variables to store date
+    // Creating instance variables to store date
     private final Cell[][] grid;
     private boolean robotPlaced = false;
     private boolean goalPlaced = false;
@@ -25,7 +25,6 @@ public class Grid {
             }
         }
     }
-
     // Display method for the grid
     public void display() {
         for (Cell[] arr:grid) {
@@ -130,6 +129,8 @@ public class Grid {
         Map parents = new Map();
         CustomArrayList visited = new CustomArrayList();
 
+        long startTime = System.currentTimeMillis();
+
         // Checking if the goal and robot is placed
         if (robotPlaced && goalPlaced) {
             queue.enqueue(robotLocation);
@@ -147,6 +148,8 @@ public class Grid {
             if (current == goalLocation) {
                 constructPath(parents, current);
                 found = true;
+                long endTime = System.currentTimeMillis();
+                System.out.println("\n" + "Execution Time : " + (endTime - startTime) + " ms");
                 return;
             }
 
@@ -166,6 +169,8 @@ public class Grid {
         }
         if (!found) {
             System.out.println("No path found!!" + "\n");
+            long notFoundEndTime = System.currentTimeMillis();
+            System.out.println("\n" + "Execution Time : " + (notFoundEndTime - startTime) + " ms");
         }
     }
 
@@ -211,17 +216,17 @@ public class Grid {
     }
 
     private String getDirections(Cell from, Cell to) {
-        int dx = to.x - from.x;
-        int dy = to.y - from.y;
+        int x = to.x - from.x;
+        int y = to.y - from.y;
 
-        if (dx == 0 && dy == -1) return "left -> ";
-        if (dx == 0 && dy == 1) return "right -> ";
-        if (dx == 1 && dy == 0) return "down -> ";
-        if (dx == -1 && dy == 0) return "up -> ";
-        if (dx == 1 && dy == -1) return "lower left -> ";
-        if (dx == -1 && dy == -1) return "upper left -> ";
-        if (dx == 1 && dy == 1) return "lower right -> ";
-        if (dx == -1 && dy == 1) return "upper right -> ";
+        if (x == 0 && y == -1) return "left -> ";
+        if (x == 0 && y == 1) return "right -> ";
+        if (x == 1 && y == 0) return "down -> ";
+        if (x == -1 && y == 0) return "up -> ";
+        if (x == 1 && y == -1) return "lower left -> ";
+        if (x == -1 && y == -1) return "upper left -> ";
+        if (x == 1 && y == 1) return "lower right -> ";
+        if (x == -1 && y == 1) return "upper right -> ";
 
         return "";
     }
