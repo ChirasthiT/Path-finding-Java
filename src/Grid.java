@@ -13,6 +13,7 @@ public class Grid {
     private Cell.Goal goalLocation;
     private CustomArrayList obstacleLocations = new CustomArrayList();
     public CustomArrayList path;
+    private CustomArrayList visited;
 
     // Constructor for the class Grid
     public Grid(int rows, int columns) {
@@ -25,6 +26,7 @@ public class Grid {
             }
         }
     }
+
     // Display method for the grid
     public void display() {
         for (Cell[] arr:grid) {
@@ -40,6 +42,11 @@ public class Grid {
         } else {
             System.out.println("Cannot Override Robot and Goal Locations");
         }
+    }
+
+    private void setNonObstacle(Cell.NonObstacleForRepresentation nonObstacle) {
+        grid[nonObstacle.x][nonObstacle.y] = nonObstacle;
+        obstacleLocations.add(nonObstacle);
     }
 
     private void setPath(int x, int y) {
@@ -125,24 +132,33 @@ public class Grid {
     }
 
     public void shortestPath() {
-        CustomQueue queue = new CustomQueue();
+        CustomArrayList open = new CustomArrayList();
         Map parents = new Map();
-        CustomArrayList visited = new CustomArrayList();
+        visited = new CustomArrayList();
 
         long startTime = System.currentTimeMillis();
 
         // Checking if the goal and robot is placed
         if (robotPlaced && goalPlaced) {
-            queue.enqueue(robotLocation);
+            open.add(robotLocation);
             visited.add(robotLocation);
         } else {
             System.out.println("Add robot and goal first!");
             return;
         }
 
-        while (!queue.isEmpty()) {
+        while (open.size() > 0) {
             // Getting the firse element of the queue
-            Cell current = queue.dequeue();
+            Cell current = open.get(0);
+
+            for (int i = 0; i < open.size(); i++) {
+                if (open.get(i).fCost() < current.fCost() || open.get(i).fCost() == current.fCost() && open.get(i).hCost < current.hCost) {
+                    current = open.get(i);
+                }
+            }
+
+            open.remove(current);
+            visited.add(current);
 
             // Checking the current cells location is the goals location
             if (current == goalLocation) {
@@ -155,15 +171,23 @@ public class Grid {
 
             // Getting neighbours of the current cell
             CustomArrayList neighbours = getNeighbours(current.x, current.y);
+
             for (int i = 0; i < neighbours.size(); i++) {
                 Cell neighbour = neighbours.get(i);
                 // Checking if the neighbour cell is already visited and not an Obstacle
                 if (!visited.contains(neighbour) && !(Objects.equals(neighbour.typeOf(), "Obstacle"))) {
-                    // Adding the neighbour cell to the queue and the visited array
-                    queue.enqueue(neighbour);
-                    visited.add(neighbour);
-                    // Saving the neighbours parent as the current cell
-                    parents.put(neighbour, current);
+                    double newMovementCost = current.gCost + heuristic(neighbour, goalLocation);
+
+                    if (!open.contains(neighbour) || newMovementCost < neighbour.gCost) {
+                        neighbour.gCost = newMovementCost;
+                        neighbour.hCost = heuristic(neighbour, goalLocation);
+                        // Saving the neighbours parent as the current cell
+                        parents.put(neighbour, current);
+                        if (!open.contains(neighbour)) {
+                            // Adding the neighbour cell to the queue and the visited array
+                            open.add(neighbour);
+                        }
+                    }
                 }
             }
         }
@@ -191,6 +215,9 @@ public class Grid {
         System.out.println("\n" + path + "\n" + "Total No of steps : " +  (path.size() - 1)  +"\n");
 
         Grid grid = new Grid(rows, columns);
+        for (int i = 0; i < visited.size(); i++) {
+            grid.setNonObstacle(new Cell.NonObstacleForRepresentation(visited.get(i).x, visited.get(i).y));
+        }
         grid.setGoal(goalLocation);
         grid.setRobot(robotLocation);
 
@@ -213,6 +240,15 @@ public class Grid {
         }
         orientation.append("Goal Reached!");
         System.out.println("Orientation" + "\n" + orientation + "\n");
+    }
+
+    private double heuristic(Cell from, Cell to) {
+        int x = Math.abs(from.x - to.x);
+        int y = Math.abs(from.y - to.y);
+        if (x > y) {
+            return  14*y + 10*(x-y);
+        }
+        return 14*x + 10*(y-x);
     }
 
     private String getDirections(Cell from, Cell to) {

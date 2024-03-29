@@ -52,6 +52,34 @@ public class CustomArrayList {
         return temp;
     }
 
+    public void set(int index, Cell data) {
+        if (!(index < 0 || index >= this.index)) {
+            arr[index] = data;
+        }
+    }
+
+    public void remove(int index) {
+        if (!(index < 0 || index >= this.index)) {
+            for (int i = index; i < this.index - 1; i++) {
+                arr[i] = arr[i + 1];
+            }
+            arr[--this.index] = null;
+        }
+    }
+
+    public void remove(Cell data) {
+        for (int i = 0; i < index; i++) {
+            if (arr[i].equals(data)) {
+                arr[i] = null;
+                for (int j = i; j < this.index - 1; j++) {
+                    arr[j] = arr[j + 1];
+                }
+                arr[--this.index] = null;
+                break;
+            }
+        }
+    }
+
     @Override
     public String toString() {
         StringBuilder out = new StringBuilder();
