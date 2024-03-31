@@ -27,6 +27,17 @@ public class Grid {
         }
     }
 
+    public Grid(int rows, int columns, boolean con) {
+        this.rows = rows; this.columns = columns;
+        this.grid = new Cell[rows][columns];
+
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                grid[i][j] = new Cell.NonObstacleForRepresentation(i, j);
+            }
+        }
+    }
+
     // Display method for the grid
     public void display() {
         for (Cell[] arr:grid) {
@@ -47,6 +58,11 @@ public class Grid {
     private void setNonObstacle(Cell.NonObstacleForRepresentation nonObstacle) {
         grid[nonObstacle.x][nonObstacle.y] = nonObstacle;
         obstacleLocations.add(nonObstacle);
+    }
+
+    private void setVisited(Cell.Visited visited) {
+        grid[visited.x][visited.y] = visited;
+        obstacleLocations.add(visited);
     }
 
     private void setPath(int x, int y) {
@@ -214,9 +230,9 @@ public class Grid {
         path = path.reverse();
         System.out.println("\n" + path + "\n" + "Total No of steps : " +  (path.size() - 1)  +"\n");
 
-        Grid grid = new Grid(rows, columns);
+        Grid grid = new Grid(rows, columns, true);
         for (int i = 0; i < visited.size(); i++) {
-            grid.setNonObstacle(new Cell.NonObstacleForRepresentation(visited.get(i).x, visited.get(i).y));
+            grid.setVisited(new Cell.Visited(visited.get(i).x, visited.get(i).y));
         }
         grid.setGoal(goalLocation);
         grid.setRobot(robotLocation);

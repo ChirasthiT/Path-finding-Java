@@ -201,13 +201,8 @@ public class Main {
         System.out.println();
         System.out.println();
 
-        System.out.println("Test 7 1000 1000");
-        Grid grid6 = new Grid(1000, 1000);
-        grid6.setGoal(new Cell.Goal(999, 999));
-        grid6.setRobot(new Cell.Robot(0, 0));
-        grid6.shortestPath();
 
-        System.out.println("Test 8");
+        System.out.println("Test 7");
         Grid grid7 = new Grid(10, 10);
         grid7.setGoal(new Cell.Goal(1, 4));
         grid7.setRobot(new Cell.Robot(8, 5));
@@ -232,6 +227,9 @@ public class Main {
         grid7.setObstacle(new Cell.Obstacle(7, 7));
         grid7.setObstacle(new Cell.Obstacle(8, 1));
         grid7.setObstacle(new Cell.Obstacle(8, 7));
+
+        grid7.display();
+        System.out.println();
 
         grid7.shortestPath();
 

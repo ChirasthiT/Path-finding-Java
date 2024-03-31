@@ -98,4 +98,14 @@ public class Cell {
         }
     }
 
+    protected static class Visited extends Cell {
+        public Visited(int row, int column) {
+            super(row, column);
+        }
+        @Override
+        public String toString() {
+            return "V";
+        }
+    }
+
 }
