@@ -201,5 +201,37 @@ public class Main {
         System.out.println();
         System.out.println();
 
+
+        System.out.println("Test 7");
+        Grid grid7 = new Grid(10, 10);
+        grid7.setGoal(new Cell.Goal(1, 4));
+        grid7.setRobot(new Cell.Robot(8, 5));
+
+        grid7.setObstacle(new Cell.Obstacle(2, 1));
+        grid7.setObstacle(new Cell.Obstacle(2, 2));
+        grid7.setObstacle(new Cell.Obstacle(2, 3));
+        grid7.setObstacle(new Cell.Obstacle(2, 4));
+        grid7.setObstacle(new Cell.Obstacle(2, 5));
+        grid7.setObstacle(new Cell.Obstacle(2, 6));
+        grid7.setObstacle(new Cell.Obstacle(2, 7));
+
+        grid7.setObstacle(new Cell.Obstacle(3, 1));
+        grid7.setObstacle(new Cell.Obstacle(3, 7));
+        grid7.setObstacle(new Cell.Obstacle(4, 1));
+        grid7.setObstacle(new Cell.Obstacle(4, 7));
+        grid7.setObstacle(new Cell.Obstacle(5, 1));
+        grid7.setObstacle(new Cell.Obstacle(5, 7));
+        grid7.setObstacle(new Cell.Obstacle(6, 1));
+        grid7.setObstacle(new Cell.Obstacle(6, 7));
+        grid7.setObstacle(new Cell.Obstacle(7, 1));
+        grid7.setObstacle(new Cell.Obstacle(7, 7));
+        grid7.setObstacle(new Cell.Obstacle(8, 1));
+        grid7.setObstacle(new Cell.Obstacle(8, 7));
+
+        grid7.display();
+        System.out.println();
+
+        grid7.shortestPath();
+
     }
 }

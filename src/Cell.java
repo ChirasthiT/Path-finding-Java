@@ -1,10 +1,17 @@
 public class Cell {
     int x, y;
+    double gCost, hCost;
 
 
     public Cell(int row, int column) {
         this.x = row;
         this.y = column;
+        gCost = Double.POSITIVE_INFINITY; // to initialize that these cells have not yet been reached from the starting point
+        hCost = 0;
+    }
+
+    public double fCost() {
+        return gCost + hCost;
     }
 
     @Override
@@ -78,6 +85,26 @@ public class Cell {
         @Override
         public String toString() {
             return "P";
+        }
+    }
+
+    protected static class NonObstacleForRepresentation extends Cell {
+        public NonObstacleForRepresentation(int row, int column) {
+            super(row, column);
+        }
+        @Override
+        public String toString() {
+            return ".";
+        }
+    }
+
+    protected static class Visited extends Cell {
+        public Visited(int row, int column) {
+            super(row, column);
+        }
+        @Override
+        public String toString() {
+            return "V";
         }
     }
 
